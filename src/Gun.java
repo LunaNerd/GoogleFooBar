@@ -191,7 +191,7 @@ public class Gun {
             stepssTillMe follows the same principle as stepsTillTarget but now for your own location.
 
         nextSlow is a way of calculating where the target ends up after bouncing on the wall.
-            next should be a faster version but it doesn't actually work.
+
 */
 class InformationOneDirection {
     public List<Integer> potentialDeltas = new ArrayList<>();
@@ -251,22 +251,5 @@ class InformationOneDirection {
             step *= -1;
         }
         return new Pair<Integer, Integer> (current, step);
-    }
-    public Pair<Integer, Integer> next(int current, int step, int max) {
-        int next = current + step;
-        int nextStep = step;
-        if ((next / max) % 2 == 1) {
-            next = max - Math.abs(next % max);
-            if (step > 0) {
-                nextStep *= -1;
-            }
-        }
-        else {
-            next = Math.abs(next % max);
-            if (step < 0) {
-                nextStep *= -1;
-            }
-        }
-        return new Pair<Integer, Integer> (next, nextStep);
     }
 }
