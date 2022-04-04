@@ -1,5 +1,3 @@
-import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +23,15 @@ public class Gun {
     static public int solution(int[] dimsRoom, int[] myLoc, int[] target, int maxBeamLength) {
         maxX = dimsRoom[0];
         maxY = dimsRoom[1];
+
+        //Covering edge case with field that's only one by one.
+        if (maxX == 0 && maxY == 0) {
+            return 0;
+        }
+        //Covering edge case of field with one dimension of 0.
+        if (maxX*maxY == 0) {
+            return 1;
+        }
         maxBeam = maxBeamLength;
 
         myX = myLoc[0];
@@ -59,7 +66,7 @@ public class Gun {
             map.get(1).add(0);
         }
 
-        // Finding all of the vectors that end up in target before hitting myself.
+        // Finding all the vectors that end up in target before hitting myself.
         for (int indexX = 0; indexX < infoX.potentialDeltas.size(); indexX++) {
             for (int indexY = 0; indexY < infoY.potentialDeltas.size(); indexY++) {
                 // TODO
@@ -105,7 +112,7 @@ public class Gun {
         //System.out.println("x: " + resX);
         //System.out.println("y: " + resY);
 
-        System.out.println("Map structure om makkelijk duplicates er uit te halen, (key is x, value is list van y's): \n\t\t" + map);
+        //System.out.println("Map structure om makkelijk duplicates er uit te halen, (key is x, value is list van y's): \n\t\t" + map);
 
         // Final count to determine the amount of vectors with a unique direction.
         int som = 0;
@@ -123,7 +130,7 @@ public class Gun {
         int iOne = 0;
         int iTwo = 0;
 
-        while (iOne < one.size() && iTwo < two.size() && one.get(iOne) != two.get(iTwo)) {
+        while (iOne < one.size() && iTwo < two.size() && !one.get(iOne).equals(two.get(iTwo))) {
             if (one.get(iOne) > two.get(iTwo)) {
                 iTwo++;
             }
@@ -209,13 +216,8 @@ class InformationOneDirection {
                 int stepWithDirection = stepSize;
 
                 for (int i = 1; i <= nSteps; i++) {
-                    //Pair<Integer, Integer> nextAndNextStep = next(current, stepWithDirection, maxSize);
                     Pair<Integer, Integer> nextAndNextStep = nextSlow(current, stepWithDirection, maxSize);
 
-                    /*if (stepSize == 1) {
-                        System.out.print("\t");
-                        System.out.println(nextAndNextStep);
-                    }*/
                     if (nextAndNextStep.getKey().equals(target)) {
                         targetSteps.add(i);
                     }
@@ -232,9 +234,6 @@ class InformationOneDirection {
                     stepsTillMe.add(meSteps);
                 }
 
-                /*if (stepSize == 1) {
-                    System.out.println();
-                }*/
             }
         }
     }
@@ -250,6 +249,27 @@ class InformationOneDirection {
             }
             step *= -1;
         }
-        return new Pair<Integer, Integer> (current, step);
+        return new Pair<> (current, step);
+    }
+}
+
+class Pair<K, V> {
+    K key;
+    V value;
+
+    public Pair(K key, V value)
+    {
+        this.key = key;
+        this.value = value;
+    }
+
+    public K getKey()
+    {
+        return key;
+    }
+
+    public V getValue()
+    {
+        return value;
     }
 }
